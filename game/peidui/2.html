@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="zh-cmn-Hans">
+<!--[if lt IE 7 ]>
+<html class="ie6" lang="zh-cmn-Hans"><![endif]-->
+<!--[if IE 7 ]>
+<html class="ie7" lang="zh-cmn-Hans"><![endif]-->
+<!--[if IE 8 ]>
+<html class="ie8" lang="zh-cmn-Hans"><![endif]-->
+<!--[if IE 9 ]>
+<html class="ie9" lang="zh-cmn-Hans"><![endif]-->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=2.0,maximum-scale=1,user-scalable=no">
+    <title>配对儿</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            max-width: 640px;
+            margin: auto;
+
+        }
+
+        canvas {
+            background: #ccc;
+        }
+        .bg{
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0,0,0,0.5);
+            display: none;
+        }
+        .gameOver{
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 160px;
+            width: 80%;
+            border-radius: 10px;
+            margin: auto;
+            background: #fff;
+        }
+        h2{
+            text-align: center;
+            width: 100%;
+            height: 80px;
+            line-height: 80px;
+            display: block;
+        }
+        button{text-align: center;
+            width: 60%;
+            height: 40px;
+            margin: 20px auto;
+            display:block;
+            border: none;
+            background: #f00;
+            font-size: 22px;
+        }
+    </style>
+</head>
+<body>
+<canvas id="canvas"></canvas>
+<div class="bg">
+    <div class="gameOver">
+        <h2>Game Over</h2>
+        <button id="replay">rePlay</button>
+    </div>
+</div>
+</body>
+<script src="../c.js"></script>
+<script src="../g.js"></script>
+<script>
+    window.onload = function () {
+        /* 自定义变量区 */
+        var love=0;
+        var lala=0;
+        var gay=0;
+        var top_girl=0;
+        var last_boy=0;
+        /* 自定义函数区 */
+        function gameOver(){
+            _(".bg").show();
+            G.over();
+        }
+        _("#replay").click(function(){
+            var love=0;
+            var lala=0;
+            var gay=0;
+            G.restart();
+            _(".bg").hide();
+        });
+        /* 游戏框架注入 */
+
+        var select = null;
+        var cha_x = 0;
+        var cha_y = 0;
+
+        G.config({
+            loadingRes: [
+                {name: "boy", src: "img/boy.png", loaded: false},
+                {name: "girl", src: "img/girl.png", loaded: false},
+                {name: "lala", src: "img/lala.png", loaded: false},
+                {name: "gay", src: "img/gay.png", loaded: false},
+                {name: "love", src: "img/love.png", loaded: false}
+            ],
+            //debug:false,
+            loadingResFn: function (loadedCount, allCount) {
+            },
+            loadingResEnd: function () {
+
+                G.start();
+            },
+            loopingBefpre: function () {
+                //c.drawImage(G.res.enter, 0, 0, canvas.width, 60);
+
+
+                last_boy=canvas.height;
+                top_girl=0;
+            },
+            playerLooping: function (player) {
+
+            },
+            loopingSpirit: function (spirit, index) {
+
+                switch (spirit.type) {
+                    case "boy":
+                        spirit.y-=1;
+                        if (spirit.y <= -100) {
+                            G.spirits.splice(index, 1);
+                        }
+                        break;
+                    case "girl":
+                        spirit.y+=1;
+                        if (spirit.y>=canvas.height+100) {
+                            G.spirits.splice(index, 1);
+                        }
+                        break;
+                }
+                c.drawImage(spirit.img, spirit.x, spirit.y, spirit.w, spirit.h);
+
+
+
+                var x = Math.floor(Math.random() * 3);
+
+                if(last_boy<spirit.y){
+                    last_boy=spirit.y;
+                }
+
+
+                if(top_girl>spirit.y){
+                    top_girl=spirit.y;
+                }
+                //G.out(last_y);
+
+            },
+            loopingAfter: function () {
+
+                if (G.spirits.length <20) {
+                    var boy = {
+                        type:"boy",
+                        x: canvas.width / 2 - 40-60,
+                        y: last_boy+100,
+                        w: 80,
+                        h: 80,
+                        img: G.res["boy"]
+                    }
+                    var girl = {
+                        type:"girl",
+                        x: canvas.width / 2 -40+60,
+                        y: top_girl-100,
+                        w: 80,
+                        h: 80,
+                        img: G.res["girl"]
+                    }
+                    G.spirits.push(girl);
+                    G.spirits.push(boy);
+
+                }
+            },
+            touchFn: {
+                start: function (x, y) {
+                    G.out(x);
+                    G.out("start")
+                    G.out(y);
+                    select = null;
+                    for (i = 0; i < G.spirits.length; i++) {
+                        var spirit = G.spirits[i];
+                        if (spirit.x < x && spirit.x + spirit.w > x && spirit.y < y && spirit.y + spirit.h > y) {
+                            G.out("in :" + i);
+                            select = spirit;
+                            cha_x = x - select.x;
+                            cha_y = y - select.y;
+                        }
+                    }
+                },
+                move: function (x, y) {
+                    G.out(x);
+                    G.out("move")
+                    G.out(y);
+                    if (select != null) {
+                        select.x = x - cha_x;
+                        select.y = y - cha_y;
+                    }
+                },
+                end: function (x, y) {
+                    G.out(x);
+                    G.out("end")
+                    G.out(y);
+                }
+            }
+        });
+        /* 初始化游戏 */
+        G.init();
+    }
+</script>
+</html>
