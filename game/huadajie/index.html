@@ -1,0 +1,375 @@
+<!doctype html>
+<html lang="zh-cmn-Hans">
+<!--[if lt IE 7 ]>
+<html class="ie6" lang="zh-cmn-Hans"><![endif]-->
+<!--[if IE 7 ]>
+<html class="ie7" lang="zh-cmn-Hans"><![endif]-->
+<!--[if IE 8 ]>
+<html class="ie8" lang="zh-cmn-Hans"><![endif]-->
+<!--[if IE 9 ]>
+<html class="ie9" lang="zh-cmn-Hans"><![endif]-->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=2.0,maximum-scale=1,user-scalable=no">
+    <title>热门话题推广游戏之花大姐</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            max-width: 640px;
+            margin: auto;
+
+        }
+
+        canvas {
+            background: #ccc;
+
+        }
+
+        .loading_pan {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+
+            background: rgba(0, 0, 0, 0.8);
+        }
+
+        #gameOverPan {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+
+            background: rgba(0, 0, 0, 0.5);
+        }
+        @-webkit-keyframes loading {
+            from {
+                -webkit-transform:rotate(0deg);
+            }
+            to {
+                -webkit-transform:rotate(360deg);
+            }
+        }
+        .loading {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            width: 100px;
+            height: 100px;
+            margin: auto;
+            display: flex;
+            align-items: center;
+            align-content: center;
+            align-self: center;
+            border-radius: 50%;
+            overflow: hidden;
+            -webkit-animation: loading 5s linear 2s infinite alternate;
+        }
+        .loading img{
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .change {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 80px;
+            height: 106px;
+            background-image: url(img/button.png);
+            background-size: 100%;
+        }
+
+        .bg {
+            background:rgba(0,0,0,1);
+            background-image: url(img/bg.png);
+            background-size: cover;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+
+        }
+
+        .start {
+            position: absolute;
+
+            bottom: 30px;
+            left: 0;
+            right: 0;
+            width: 90vw;
+            height: 20vw;
+            margin: auto;
+            text-align: center;
+        }
+        .start img{
+            height: 100%;
+        }
+
+        #gameover {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            width: 90vw;
+            height: 200px;
+            margin: auto;
+            background-color: #fff;
+            text-align: center;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        #gameover h2 {
+            height: 50px;
+            line-height: 50px;
+            width: 100%;
+        }
+
+        .msg {
+            width: 100%;
+            line-height: 60px;
+            font-size: 18px;
+        }
+
+        #count {
+            color: #f00;
+            font-weight: 900;
+            font-size: 22px;
+        }
+
+        .restart {
+            text-align: center;
+            /* width: 100px; */
+            background-color: #f00;
+            color: #fff;
+            position: absolute;
+            right: 0;
+            /* top: 0; */
+            left: 0;
+            bottom: 0;
+            height: 50px;
+            margin: auto;
+            line-height: 50px;
+            font-size: 25px;
+        }
+
+        .hide {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<canvas id="canvas"></canvas>
+<div id="change" class="change"></div>
+
+<div id="bg" class="bg">
+
+    <div class="loading">
+        <img src="img/bug.png" alt=""/>
+        <!--
+        正在很努力地载入中。。。
+        <span id="load_count"></span>-->
+    </div>
+
+    <div id="start" class="start hide">
+        <img src="img/start.png" alt=""/>
+    </div>
+</div>
+
+<div id="gameOverPan" class="gameOverPan hide">
+    <div id="gameover">
+        <h2>game Over</h2>
+
+        <div class="msg">你一共让<b id="count"></b>个瓢虫安全地到达了彼岸</div>
+        <div id="restart" class="restart">restart</div>
+    </div>
+</div>
+
+
+</body>
+<script src="../c.js"></script>
+<script src="../g.js"></script>
+<script>
+    window.onload = function () {
+        /* 自定义变量区 */
+        var passedBugs = 0;
+        var speed = 1;
+        /* 自定义函数区 */
+        function make_hdj() {
+            var juli = 300;
+            var y = Math.floor(Math.random() * 2);
+            var yy = 0;
+            if (y === 1) {
+                yy = 0;
+            } else {
+                yy = juli;
+            }
+            var bug = {
+                x: 10,
+                y: canvas.height + yy,
+                w: G.res.bug.width,
+                h: G.res.bug.height,
+                img: G.res.bug
+            }
+            G.spirits.push(bug);
+            if (yy === 0) {
+                yy = juli;
+            } else {
+                yy = 0;
+            }
+            var bug = {
+                x: 160,
+                y: canvas.height + yy,
+                w: G.res.bug.width,
+                h: G.res.bug.height,
+                img: G.res.bug
+            }
+            G.spirits.push(bug);
+        }
+
+        function change() {
+            switch (G.player.x) {
+                case 10:
+                    G.player.x = 160;
+                    break;
+                case 160:
+                    G.player.x = 10;
+                    break;
+            }
+        }
+
+        var bg_music=new Audio();
+        bg_music.src="audio/GameBackground.mp3";
+        bg_music.onload=function(){
+            this.play();
+        }
+        bg_music.play();
+        bg_music.pause();
+
+        var change_music=new Audio();
+        change_music.src="audio/change.mp3";
+        change_music.play();
+        change_music.pause();
+
+
+        _("#change").click(function () {
+            change();
+            change_music.currentTime=0;
+            change_music.play();
+        });
+        _("#start").click(function () {
+            G.start();
+            _("#start").hide();
+            _("#bg").hide();
+        });
+
+        _("#restart").click(function () {
+            passedBugs = 0;
+            _("#gameOverPan").hide();
+            bg_music.play();
+            G.restart();
+
+        });
+
+        var tjimg=new Image();
+        tjimg.src="http://img.users.51.la/18458091.asp";
+
+        /* 游戏框架注入 */
+        G.config({
+            loadingRes: [
+                {name: "bug", src: "img/bug.png", loaded: false},
+                {name: "tizi", src: "img/tizi.png", loaded: false},
+                {name: "title", src: "img/title.png", loaded: false},
+                {name: "bandao", src: "img/bandao.png", loaded: false},
+                {name: "caodi", src: "img/caodi.jpg", loaded: false}
+            ],
+            //debug:false,
+            loadingResFn: function (loadedCount, allCount) {
+
+                _("#load_count").html(loadedCount + "/" + allCount);
+
+            },
+            loadingResEnd: function () {
+                _(".loading").hide();
+                _("#start").show();
+                make_hdj();
+
+
+                G.player.x = 10;
+                G.player.y = 255;
+                G.player.w = G.res.bandao.width;
+                G.player.h = G.res.bandao.height;
+            },
+            loopingBefpre: function () {
+                c.drawImage(G.res.caodi, 0, 0);
+                c.drawImage(G.res.tizi, 10, 0);
+                c.drawImage(G.res.tizi, 160, 0);
+            },
+            playerLooping: function (player) {
+                c.drawImage(G.res.bandao, G.player.x, G.player.y);
+            },
+            loopingSpirit: function (spirit, index) {
+                //spirit.y -= Math.floor(Math.random() * 5);
+
+                speed = 2 + (passedBugs + 1) * 0.1;
+                spirit.y -= speed;
+
+
+                if (spirit.y > G.player.y + 10 && spirit.y < G.player.y + G.player.h - 60) {
+
+                    if (spirit.x === G.player.x) {
+
+                    } else {
+                        //G.spirits.splice(index, 1);
+                        G.over();
+                        G.out("die...");
+                        _("#count").html(passedBugs);
+                        document.title="我成功地让"+passedBugs+"个花大姐到达了目的地";
+                        _("#gameOverPan").show();
+                    }
+
+
+                }
+
+
+                if (spirit.y < -100) {
+                    G.spirits.splice(index, 1);
+                    passedBugs += 1;
+                }
+                c.drawImage(spirit.img, spirit.x, spirit.y, spirit.w, spirit.h);
+            },
+            loopingAfter: function () {
+                c.globalAlpha = 0.7;
+                c.drawImage(G.res.title, 10, 10, canvas.width - 20, 50);
+                c.globalAlpha = 1;
+                c.drawImage(G.res.bug, canvas.width - 100, 22.5, 25, 25);
+                c.font = "30px Courier New";
+                c.textAlign = 'left';
+                c.textBaseline = 'top';
+                c.fillStyle = "#ffffff";
+
+                c.fillText("铁路扳道工", 20, 20);
+                c.fillText(passedBugs, canvas.width - 100 + 30, 20);
+
+                if (G.spirits.length < 2) {
+                    make_hdj();
+                }
+            }
+        });
+        /* 初始化游戏 */
+        G.init();
+    }
+</script>
+</html>
