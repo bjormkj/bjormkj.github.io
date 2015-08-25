@@ -86,12 +86,41 @@
             border: none;
             float: left;
         }
+        .welcome{
+            display: none;
+            background: url("img/welcome_bg_3.png"),url("img/welcome_bg_2.png"),url("img/welcome_bg_1.png"),url("img/welcome_bg_0.jpg");
+            background-size: 100%,100%,100% 100%,100% 100%;
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-repeat: no-repeat;
+            background-position: top,top,center,bottom;
+        }
+        #play{
+            position: fixed;
+            width: 120px;
+            height: 120px;
+            background-repeat: no-repeat;
+            background: url(img/play.png);
+            background-size: 100%;
+            left: 0;
+            right: 0;
+            bottom: 15%;
+            margin: auto;
+        }
     </style>
 </head>
 <body>
 <canvas id="canvas"></canvas>
 <div class="bottom">
     <img src="bottom.png" width="100%" />
+</div>
+<div class="welcome">
+    <div id="play"></div>
 </div>
 <div class="bg">
     <div class="gameOver">
@@ -117,10 +146,18 @@
             //document.title = "我一共配了" + lover + "对儿情侣";
             //_("#msg").html("我一共配了" + lover + "对儿情侣");
         }
-
+        function showWelcome(){
+            _(".welcome").show();
+        }
+        _("#play").click(function () {
+            G.restart();
+            _(".bg").hide();
+            _(".welcome").hide();
+        });
         _("#replay").click(function () {
             G.restart();
             _(".bg").hide();
+            _(".welcome").hide();
         });
         /* 游戏框架注入 */
 
@@ -140,10 +177,10 @@
             },
             loadingResEnd: function () {
 
-                G.start();
+                showWelcome();
             },
             loopingBefpre: function () {
-                //c.drawImage(G.res.enter, 0, 0, canvas.width, 60);
+                c.drawImage(G.res.bg, 0, 0, canvas.width, canvas.height);
 
                 top_y=canvas.height;
 
