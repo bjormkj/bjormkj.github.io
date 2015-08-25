@@ -180,7 +180,7 @@
                 {name: "man_b", src: "img/man_b.png", loaded: false},
                 {name: "man_g", src: "img/man_g.png", loaded: false}
             ],
-            //debug:false,
+            debug:false,
             spiritsDesc:true,
             loadingResFn: function (loadedCount, allCount) {
             },
@@ -248,7 +248,7 @@
                             var man_w = {
                                 type: "man_w",
                                 x: canvas.width / 2 - (G.res["man_w"].width/2)*sf,
-                                y:  -1*G.res["man_w"].height*sf,
+                                y:  -1*G.res["man_w"].height*sf*0.5,
                                 w: G.res["man_w"].width*sf,
                                 h: G.res["man_w"].height*sf,
                                 img: G.res["man_w"]
@@ -259,7 +259,7 @@
                             var man_b = {
                                 type: "man_b",
                                 x: canvas.width / 2 - (G.res["man_b"].width/2)*sf,
-                                y:  -1*G.res["man_w"].height*sf,
+                                y:  -1*G.res["man_w"].height*sf*0.5,
                                 w: G.res["man_b"].width*sf,
                                 h: G.res["man_b"].height*sf,
                                 img: G.res["man_b"]
@@ -271,7 +271,7 @@
                             var man_g = {
                                 type: "man_g",
                                 x: canvas.width / 2 - (G.res["man_g"].width/2)*sf,
-                                y:  -1*G.res["man_w"].height*sf,
+                                y:  -1*G.res["man_w"].height*sf*0.5,
                                 w: G.res["man_g"].width*sf,
                                 h: G.res["man_g"].height*sf,
                                 img: G.res["man_g"]
