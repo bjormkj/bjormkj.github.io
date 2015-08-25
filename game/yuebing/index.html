@@ -34,7 +34,7 @@
             bottom: 0;
             left: 0;
             right: 0;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, sf);
             display: none;
         }
 
@@ -127,6 +127,7 @@
         <h2>Game Over</h2>
 
         <p id="msg"></p>
+        <a href="http://a.app.qq.com/o/simple.jsp?pkgname=com.rhct.android.rhctapp" target="_blank">下载app</a>
         <button id="replay">rePlay</button>
     </div>
 </div>
@@ -136,26 +137,33 @@
 <script>
     window.onload = function () {
         /* 自定义变量区 */
-
-
+        var zs=0;
+        var sf=0.3;
         var top_y = 0;
         /* 自定义函数区 */
+
+        function up(){
+            zs+=1;
+            document.title = "我成功集结了" + zs + "名战士";
+            _("#msg").html(document.title);
+        }
+
         function gameOver() {
             _(".bg").show();
             G.over();
-            //document.title = "我一共配了" + lover + "对儿情侣";
-            //_("#msg").html("我一共配了" + lover + "对儿情侣");
         }
         function showWelcome(){
             _(".welcome").show();
         }
         _("#play").click(function () {
+            zs=0;
             G.restart();
             _(".bg").hide();
             _(".welcome").hide();
         });
         _("#replay").click(function () {
             G.restart();
+            zs=0;
             _(".bg").hide();
             _(".welcome").hide();
         });
@@ -173,6 +181,7 @@
                 {name: "man_g", src: "img/man_g.png", loaded: false}
             ],
             //debug:false,
+            spiritsDesc:true,
             loadingResFn: function (loadedCount, allCount) {
             },
             loadingResEnd: function () {
@@ -199,11 +208,12 @@
 
                 G.out("top_y:"+top_y);
 
-                if (spirit.y >= canvas.height-spirit.h*0.5) {
+                if (spirit.y >= canvas.height-spirit.h*sf*3) {
                     switch (spirit.type){
                         case "man_w":
-                            if((spirit.x+spirit.w*0.5)<canvas.width/3){
+                            if((spirit.x+spirit.w*sf)<canvas.width/3){
                                 G.spirits.splice(index, 1);
+                                up();
                             }else{
                                 gameOver();
                             }
@@ -211,24 +221,22 @@
                         case "man_b":
                             if(spirit.x>canvas.width/3*2){
                                 G.spirits.splice(index, 1);
+                                up();
                             }else{
                                 gameOver();
                             }
                             break;
                         case "man_g":
-                            if(spirit.x>canvas.width/3 && (spirit.x+spirit.w*0.5)<canvas.width/3*2){
+                            if(spirit.x>canvas.width/3 && (spirit.x+spirit.w*sf)<canvas.width/3*2){
                                 G.spirits.splice(index, 1);
+                                up();
                             }else{
                                 gameOver();
                             }
                             break;
                     }
                 }
-                c.drawImage(spirit.img, spirit.x, spirit.y, spirit.img.width * 0.5, spirit.img.height * 0.5);
-
-
-
-
+                c.drawImage(spirit.img, spirit.x, spirit.y, spirit.img.width * sf, spirit.img.height * sf);
 
 
             },
@@ -239,10 +247,10 @@
                         case 0:
                             var man_w = {
                                 type: "man_w",
-                                x: canvas.width / 2 - (G.res["man_w"].width/2)*0.5,
-                                y:  -1*G.res["man_w"].height*0.5,
-                                w: G.res["man_w"].width*0.5,
-                                h: G.res["man_w"].height*0.5,
+                                x: canvas.width / 2 - (G.res["man_w"].width/2)*sf,
+                                y:  -1*G.res["man_w"].height*sf,
+                                w: G.res["man_w"].width*sf,
+                                h: G.res["man_w"].height*sf,
                                 img: G.res["man_w"]
                             }
                             G.spirits.push(man_w);
@@ -250,10 +258,10 @@
                         case 1:
                             var man_b = {
                                 type: "man_b",
-                                x: canvas.width / 2 - (G.res["man_b"].width/2)*0.5,
-                                y:  -1*G.res["man_w"].height*0.5,
-                                w: G.res["man_b"].width*0.5,
-                                h: G.res["man_b"].height*0.5,
+                                x: canvas.width / 2 - (G.res["man_b"].width/2)*sf,
+                                y:  -1*G.res["man_w"].height*sf,
+                                w: G.res["man_b"].width*sf,
+                                h: G.res["man_b"].height*sf,
                                 img: G.res["man_b"]
                             }
                             G.spirits.push(man_b);
@@ -262,10 +270,10 @@
                         case 2:
                             var man_g = {
                                 type: "man_g",
-                                x: canvas.width / 2 - (G.res["man_g"].width/2)*0.5,
-                                y:  -1*G.res["man_w"].height*0.5,
-                                w: G.res["man_g"].width*0.5,
-                                h: G.res["man_g"].height*0.5,
+                                x: canvas.width / 2 - (G.res["man_g"].width/2)*sf,
+                                y:  -1*G.res["man_w"].height*sf,
+                                w: G.res["man_g"].width*sf,
+                                h: G.res["man_g"].height*sf,
                                 img: G.res["man_g"]
                             }
                             G.spirits.push(man_g);
@@ -275,12 +283,12 @@
 
                 }
                 /*
-                c.drawImage(G.res.lover, 10, 10, G.res.lover.width / 4, G.res.lover.height / 4);
+                c.drawImage(G.res.zs, 10, 10, G.res.lover.width / 4, G.res.lover.height / 4);
                 c.font = "20px Courier New";
                 c.textAlign = 'left';
                 c.textBaseline = 'top';
                 c.fillStyle = "#ffffff";
-                c.fillText("情侣" + lover + "对儿", G.res.lover.width / 4 + 20, 15);
+                c.fillText("" + zs + "", G.res.lover.width / 4 + 20, 15);
                 */
             },
             touchFn: {

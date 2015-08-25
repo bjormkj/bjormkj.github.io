@@ -8,6 +8,7 @@ var G = {
     timer: 0,
     fps: 64,
     spirits: [],
+    spiritsDesc: false,//config
     speed: 10,
     timerFPS: 0,
     gameTime: 0,
@@ -55,6 +56,8 @@ var G = {
         conf.touchFn != undefined ? G.touchFn = conf.touchFn : false;
         conf.debug != undefined ? G.debug = conf.debug : false;
         conf.debug != undefined ? G.debug = conf.debug : false;
+        conf.spiritsDesc != undefined ? G.spiritsDesc = conf.spiritsDesc : false;
+
     },
     start: function () {
         if (G.gameStatus === "ready") {
@@ -145,43 +148,70 @@ var G = {
                     };
 
                     //
+                    if (G.spiritsDesc) {
+                        for (i = G.spirits.length-1; i >0; i--) {
+                            var spirit = G.spirits[i];
+                            var index = i;
+                            var cross_spirit = null;
+                            //
+                            var cross_index = 0;
+                            for (ii = 0; ii < G.spirits.length; ii++) {
+                                var spirit2 = G.spirits[ii];
 
-                    for (i = 0; i < G.spirits.length; i++) {
-                        var spirit = G.spirits[i];
+                                if (spirit2 != spirit) {
+                                    if (Math.abs((spirit2.x + spirit2.w / 2) - (spirit.x + spirit.w / 2)) < (spirit2.w / 2 + spirit.w / 2)) {
+                                        if (Math.abs((spirit2.y + spirit2.h / 2) - (spirit.y + spirit.h / 2)) < (spirit2.h / 2 + spirit.h / 2)) {
 
-                        var cross_spirit = null;
-                        //
-                        var cross_index = 0;
-                        for (ii = 0; ii < G.spirits.length; ii++) {
-                            var spirit2 = G.spirits[ii];
+                                            cross_spirit = spirit2;
+                                            cross_index = ii;
+                                            break;
 
-                            if (spirit2 != spirit) {
-                                /*
-                                 if(spirit2.x>spirit.x){
-                                 if(spirit2.x<spirit.x+spirit.w){
-                                 if(spirit2.y>spirit.y){
-                                 if(spirit2.y<spirit.y+spirit.h){
-                                 cross_spirit=spirit2;
-                                 cross_index=ii;
-                                 break;
-                                 }
-                                 }
-                                 }
-                                 }*/
-                                if (Math.abs((spirit2.x + spirit2.w / 2) - (spirit.x + spirit.w / 2)) < (spirit2.w / 2 + spirit.w / 2)) {
-                                    if (Math.abs((spirit2.y + spirit2.h / 2) - (spirit.y + spirit.h / 2)) < (spirit2.h / 2 + spirit.h / 2)) {
-
-                                        cross_spirit = spirit2;
-                                        cross_index = ii;
-                                        break;
-
+                                        }
                                     }
                                 }
                             }
-
+                            //
+                            G.loopingSpirit(spirit, index, cross_spirit, cross_index);//渲染精灵
                         }
-                        //
-                        G.loopingSpirit(spirit, i, cross_spirit, cross_index);//渲染精灵
+                    } else {
+                        for (i = 0; i < G.spirits.length; i++) {
+
+                            var spirit = G.spirits[i];
+                            var index = i;
+                            var cross_spirit = null;
+                            //
+                            var cross_index = 0;
+                            for (ii = 0; ii < G.spirits.length; ii++) {
+                                var spirit2 = G.spirits[ii];
+
+                                if (spirit2 != spirit) {
+                                    /*
+                                     if(spirit2.x>spirit.x){
+                                     if(spirit2.x<spirit.x+spirit.w){
+                                     if(spirit2.y>spirit.y){
+                                     if(spirit2.y<spirit.y+spirit.h){
+                                     cross_spirit=spirit2;
+                                     cross_index=ii;
+                                     break;
+                                     }
+                                     }
+                                     }
+                                     }*/
+                                    if (Math.abs((spirit2.x + spirit2.w / 2) - (spirit.x + spirit.w / 2)) < (spirit2.w / 2 + spirit.w / 2)) {
+                                        if (Math.abs((spirit2.y + spirit2.h / 2) - (spirit.y + spirit.h / 2)) < (spirit2.h / 2 + spirit.h / 2)) {
+
+                                            cross_spirit = spirit2;
+                                            cross_index = ii;
+                                            break;
+
+                                        }
+                                    }
+                                }
+
+                            }
+                            //
+                            G.loopingSpirit(spirit, index, cross_spirit, cross_index);//渲染精灵
+                        }
                     }
 
 
