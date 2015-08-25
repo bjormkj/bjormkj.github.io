@@ -34,21 +34,34 @@
             bottom: 0;
             left: 0;
             right: 0;
-            background: rgba(0, 0, 0, sf);
+            background: rgba(0, 0, 0,0.5);
             display: none;
         }
 
         .gameOver {
             position: absolute;
+            margin: auto;
             top: 0;
             bottom: 0;
             left: 0;
             right: 0;
-            height: 160px;
+            display: table;
+            height: auto;
+            line-height: 1.5em;
+            color: #fff;
+            font-size: 20px;
+            text-align: center;
+            width: 100%;
+        }
+        .box{
             width: 80%;
-            border-radius: 10px;
             margin: auto;
-            background: #fff;
+            background: rgba(255,255,255,0.5);
+        }
+        .box img{
+            border: none;
+            max-width: 100%;
+            width: 80%;
         }
 
         h2 {
@@ -124,11 +137,20 @@
 </div>
 <div class="bg">
     <div class="gameOver">
-        <h2>Game Over</h2>
+        <div class="box">
+            <h2>游戏被你玩死了 >_< </h2>
 
-        <p id="msg"></p>
-        <a href="http://a.app.qq.com/o/simple.jsp?pkgname=com.rhct.android.rhctapp" target="_blank">下载app</a>
-        <button id="replay">rePlay</button>
+            <p id="msg"></p>
+            <p>关注新京报：</p>
+            <p><a href="http://a.app.qq.com/o/simple.jsp?pkgname=com.rhct.android.rhctapp" target="_blank">
+                <img src="img/logo2.png" alt=""/></a></p>
+
+            <p>
+                <a href="http://a.app.qq.com/o/simple.jsp?pkgname=com.rhct.android.rhctapp" target="_blank">下载 热门话题app</a>
+            </p>
+            <p><button id="replay">不服再战！</button></p>
+
+        </div>
     </div>
 </div>
 </body>
