@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="31ada250-0240-4592-8b02-b142ce0267f8" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/game/yuebing/index.html" afterPath="$PROJECT_DIR$/game/yuebing/index.html" />
-    </list>
+    <list default="true" id="31ada250-0240-4592-8b02-b142ce0267f8" name="Default" comment="" />
     <ignored path="bjormkj.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -48,8 +46,8 @@
       <file leaf-file-name="index.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/game/yuebing/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.47325101">
-              <caret line="172" column="20" selection-start-line="172" selection-start-column="20" selection-end-line="172" selection-end-column="20" />
+            <state vertical-scroll-proportion="0.18518518">
+              <caret line="146" column="33" selection-start-line="146" selection-start-column="33" selection-end-line="146" selection-end-column="33" />
               <folding>
                 <marker date="1440498352000" expanded="true" signature="3126:3912" placeholder="..." />
                 <marker date="1440498352000" expanded="true" signature="3177:3225" placeholder="..." />
@@ -534,8 +532,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/game/yuebing/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.47325101">
-          <caret line="172" column="20" selection-start-line="172" selection-start-column="20" selection-end-line="172" selection-end-column="20" />
+        <state vertical-scroll-proportion="0.18518518">
+          <caret line="146" column="33" selection-start-line="146" selection-start-column="33" selection-end-line="146" selection-end-column="33" />
           <folding>
             <marker date="1440498352000" expanded="true" signature="3126:3912" placeholder="..." />
             <marker date="1440498352000" expanded="true" signature="3177:3225" placeholder="..." />
