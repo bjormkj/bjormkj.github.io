@@ -241,22 +241,65 @@
         var zs = 0;
         var sf = 0.3;
         var top_y = 0;
+        var canRePlay=false;
         /* 自定义函数区 */
 
         function up() {
             zs += 1;
-            document.title = "大阅兵我集结" + zs + "名战士，不服你来！";
+            document.title = "大阅兵我集结" + zs + "名战士，比比谁手快！";
             _("#msg").html(document.title);
         }
 
         function gameOver() {
+            canRePlay=false;
             _(".bg").show();
-            _("#replay").hide();
+            //_("#replay").hide();
             up();
             G.over();
             setTimeout(function () {
-                _("#replay").show();
-            }, 3000);
+                //_("#replay").show();
+                canRePlay=true;
+            }, 2000);
+        }
+        function make_a_man(){
+            var r = Math.floor(Math.random() * 3);
+            switch (r) {
+                case 0:
+                    var man_w = {
+                        type: "man_w",
+                        x: canvas.width / 2 - (G.res["man_w"].width / 2) * sf,
+                        y: -1 * G.res["man_w"].height * sf * 1.1,
+                        w: G.res["man_w"].width * sf,
+                        h: G.res["man_w"].height * sf,
+                        img: G.res["man_w"]
+                    }
+                    G.spirits.push(man_w);
+                    break;
+                case 1:
+                    var man_b = {
+                        type: "man_b",
+                        x: canvas.width / 2 - (G.res["man_b"].width / 2) * sf,
+                        y: -1 * G.res["man_w"].height * sf * 1.1,
+                        w: G.res["man_b"].width * sf,
+                        h: G.res["man_b"].height * sf,
+                        img: G.res["man_b"]
+                    }
+                    G.spirits.push(man_b);
+
+                    break;
+                case 2:
+                    var man_g = {
+                        type: "man_g",
+                        x: canvas.width / 2 - (G.res["man_g"].width / 2) * sf,
+                        y: -1 * G.res["man_w"].height * sf * 1.1,
+                        w: G.res["man_g"].width * sf,
+                        h: G.res["man_g"].height * sf,
+                        img: G.res["man_g"]
+                    }
+                    G.spirits.push(man_g);
+                    break;
+
+            }
         }
         function makeman(){
             var r = Math.floor(Math.random() * 3);
@@ -348,15 +391,18 @@
             _(".bg").hide();
             _(".loading").hide();
             _(".welcome").hide();
-            makeman();
+            make_a_man();
+
         });
         _("#replay").click(function () {
-            G.restart();
-            zs = 0;
-            _(".bg").hide();
-            _(".loading").hide();
-            _(".welcome").hide();
-            makeman();
+            if(canRePlay){
+                G.restart();
+                zs = 0;
+                _(".bg").hide();
+                _(".loading").hide();
+                _(".welcome").hide();
+                make_a_man();
+            }
         });
         /* 游戏框架注入 */
 
@@ -438,7 +484,6 @@
             loopingAfter: function () {
                 if (top_y >= 0) {
                     makeman();
-
                 }
                 /*
                  c.drawImage(G.res.zs, 10, 10, G.res.lover.width / 4, G.res.lover.height / 4);
