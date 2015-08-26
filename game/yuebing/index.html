@@ -98,8 +98,9 @@
         }
 
         #msg {
-            text-align: center;
-            width: 100%;
+            text-align: left;
+            width: 80%;
+            margin: auto;
         }
 
         .bottom {
@@ -173,17 +174,18 @@
 <div class="bg">
     <div class="gameOver">
         <div class="box">
-            <h2>游戏被你玩死了 >_< </h2>
+
+            <!--<h2>游戏被你玩死了 >_< </h2>-->
 
             <p id="msg"></p>
 
-
-            <p><img src="img/xjb.png" width="80%" alt=""/></p>
+            <!--
+            <p><img src="img/xjb.png" width="80%" alt=""/></p>-->
 
             <p><a href="http://a.app.qq.com/o/simple.jsp?pkgname=com.rhct.android.rhctapp" target="_blank">
-                <img src="img/download.png" alt=""/></a></p>
+                <img src="img/gameoverdown.png" alt=""/></a></p>
 
-            <p class="author">策划/陈璐   设计/许英剑  制作/宫文博</p>
+            <p class="author">策划/陈璐   设计/许英剑、师春雷  制作/宫文博</p>
             <p>
                 <button id="replay">不服再战！</button>
             </p>
@@ -209,12 +211,13 @@
 
         function up() {
             zs += 1;
-            document.title = "我成功集结了" + zs + "名战士";
+            document.title = "大阅兵我集结雷" + zs + "名战士，不服你来！";
             _("#msg").html(document.title);
         }
 
         function gameOver() {
             _(".bg").show();
+            up();
             G.over();
         }
 
