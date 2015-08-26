@@ -274,7 +274,7 @@
             loopingSpirit: function (spirit, index, cross_spirit, cross_index) {
 
 
-                spirit.y += 1;
+                spirit.y += 1+G.gameTime*0.05;
 
                 if (spirit.y < top_y) {
                     top_y = spirit.y;
