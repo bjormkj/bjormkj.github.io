@@ -231,8 +231,12 @@
 
         function gameOver() {
             _(".bg").show();
+            _("#replay").hide();
             up();
             G.over();
+            setTimeout(function(){
+                _("#replay").show();
+            },3000);
         }
 
         function showWelcome() {
