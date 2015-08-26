@@ -219,6 +219,7 @@
                 <img src="img/gameoverdown.png" alt=""/></a></p>
 
             <p class="author">策划/陈璐 设计/许英剑、师春雷</p>
+
             <p class="author">制作/宫文博 数据库/李阳</p>
 
             <p>
@@ -242,7 +243,7 @@
         var zs = 0;
         var sf = 0.3;
         var top_y = 0;
-        var canRePlay=false;
+        var canRePlay = false;
         /* 自定义函数区 */
 
         function up() {
@@ -252,17 +253,18 @@
         }
 
         function gameOver() {
-            canRePlay=false;
+            canRePlay = false;
             _(".bg").show();
             //_("#replay").hide();
             up();
             G.over();
             setTimeout(function () {
                 //_("#replay").show();
-                canRePlay=true;
+                canRePlay = true;
             }, 2000);
         }
-        function make_a_man(){
+
+        function make_a_man() {
             var r = Math.floor(Math.random() * 3);
             switch (r) {
                 case 0:
@@ -302,85 +304,7 @@
 
             }
         }
-        function makeman(){
-            var r = Math.floor(Math.random() * 3);
-            switch (r) {
-                case 0:
-                    var man_w = {
-                        type: "man_w",
-                        x: canvas.width / 3 * 2 - (G.res["man_w"].width / 2) * sf,
-                        y: -1 * G.res["man_w"].height * sf * 1.1,
-                        w: G.res["man_w"].width * sf,
-                        h: G.res["man_w"].height * sf,
-                        img: G.res["man_w"]
-                    }
-                    G.spirits.push(man_w);
-                    break;
-                case 1:
-                    var man_b = {
-                        type: "man_b",
-                        x: canvas.width / 3 * 2 - (G.res["man_b"].width / 2) * sf,
-                        y: -1 * G.res["man_w"].height * sf * 1.1,
-                        w: G.res["man_b"].width * sf,
-                        h: G.res["man_b"].height * sf,
-                        img: G.res["man_b"]
-                    }
-                    G.spirits.push(man_b);
 
-                    break;
-                case 2:
-                    var man_g = {
-                        type: "man_g",
-                        x: canvas.width / 3 * 2 - (G.res["man_g"].width / 2) * sf,
-                        y: -1 * G.res["man_w"].height * sf * 1.1,
-                        w: G.res["man_g"].width * sf,
-                        h: G.res["man_g"].height * sf,
-                        img: G.res["man_g"]
-                    }
-                    G.spirits.push(man_g);
-                    break;
-
-            }
-
-            r = Math.floor(Math.random() * 3);
-            switch (r) {
-                case 0:
-                    var man_w = {
-                        type: "man_w",
-                        x: canvas.width / 3 - (G.res["man_w"].width / 2) * sf,
-                        y: -1 * G.res["man_w"].height * sf * 1.1,
-                        w: G.res["man_w"].width * sf,
-                        h: G.res["man_w"].height * sf,
-                        img: G.res["man_w"]
-                    }
-                    G.spirits.push(man_w);
-                    break;
-                case 1:
-                    var man_b = {
-                        type: "man_b",
-                        x: canvas.width / 3 - (G.res["man_b"].width / 2) * sf,
-                        y: -1 * G.res["man_w"].height * sf * 1.1,
-                        w: G.res["man_b"].width * sf,
-                        h: G.res["man_b"].height * sf,
-                        img: G.res["man_b"]
-                    }
-                    G.spirits.push(man_b);
-
-                    break;
-                case 2:
-                    var man_g = {
-                        type: "man_g",
-                        x: canvas.width / 3 - (G.res["man_g"].width / 2) * sf,
-                        y: -1 * G.res["man_w"].height * sf * 1.1,
-                        w: G.res["man_g"].width * sf,
-                        h: G.res["man_g"].height * sf,
-                        img: G.res["man_g"]
-                    }
-                    G.spirits.push(man_g);
-                    break;
-
-            }
-        }
         function showWelcome() {
             _(".loading").hide();
             _(".welcome").show();
@@ -396,7 +320,7 @@
 
         });
         _("#replay").click(function () {
-            if(canRePlay){
+            if (canRePlay) {
                 G.restart();
                 zs = 0;
                 _(".bg").hide();
@@ -442,7 +366,7 @@
             loopingSpirit: function (spirit, index, cross_spirit, cross_index) {
 
 
-                spirit.y += 0.5 + G.gameTime * 0.01;
+                spirit.y += 1 +zs * 0.05;
 
                 if (spirit.y < top_y) {
                     top_y = spirit.y;
@@ -484,7 +408,83 @@
             },
             loopingAfter: function () {
                 if (top_y >= 0) {
-                    makeman();
+                    var r = Math.floor(Math.random() * 3);
+                    switch (r) {
+                        case 0:
+                            var man_w = {
+                                type: "man_w",
+                                x: canvas.width / 3 * 2 - (G.res["man_w"].width / 2) * sf,
+                                y: -1 * G.res["man_w"].height * sf * 1.1,
+                                w: G.res["man_w"].width * sf,
+                                h: G.res["man_w"].height * sf,
+                                img: G.res["man_w"]
+                            }
+                            G.spirits.push(man_w);
+                            break;
+                        case 1:
+                            var man_b = {
+                                type: "man_b",
+                                x: canvas.width / 3 * 2 - (G.res["man_b"].width / 2) * sf,
+                                y: -1 * G.res["man_w"].height * sf * 1.1,
+                                w: G.res["man_b"].width * sf,
+                                h: G.res["man_b"].height * sf,
+                                img: G.res["man_b"]
+                            }
+                            G.spirits.push(man_b);
+
+                            break;
+                        case 2:
+                            var man_g = {
+                                type: "man_g",
+                                x: canvas.width / 3 * 2 - (G.res["man_g"].width / 2) * sf,
+                                y: -1 * G.res["man_w"].height * sf * 1.1,
+                                w: G.res["man_g"].width * sf,
+                                h: G.res["man_g"].height * sf,
+                                img: G.res["man_g"]
+                            }
+                            G.spirits.push(man_g);
+                            break;
+
+                    }
+
+                    r = Math.floor(Math.random() * 3);
+                    switch (r) {
+                        case 0:
+                            var man_w = {
+                                type: "man_w",
+                                x: canvas.width / 3 - (G.res["man_w"].width / 2) * sf,
+                                y: -1 * G.res["man_w"].height * sf * 1.1,
+                                w: G.res["man_w"].width * sf,
+                                h: G.res["man_w"].height * sf,
+                                img: G.res["man_w"]
+                            }
+                            G.spirits.push(man_w);
+                            break;
+                        case 1:
+                            var man_b = {
+                                type: "man_b",
+                                x: canvas.width / 3 - (G.res["man_b"].width / 2) * sf,
+                                y: -1 * G.res["man_w"].height * sf * 1.1,
+                                w: G.res["man_b"].width * sf,
+                                h: G.res["man_b"].height * sf,
+                                img: G.res["man_b"]
+                            }
+                            G.spirits.push(man_b);
+
+                            break;
+                        case 2:
+                            var man_g = {
+                                type: "man_g",
+                                x: canvas.width / 3 - (G.res["man_g"].width / 2) * sf,
+                                y: -1 * G.res["man_w"].height * sf * 1.1,
+                                w: G.res["man_g"].width * sf,
+                                h: G.res["man_g"].height * sf,
+                                img: G.res["man_g"]
+                            }
+                            G.spirits.push(man_g);
+                            break;
+
+                    }
                 }
                 /*
                  c.drawImage(G.res.zs, 10, 10, G.res.lover.width / 4, G.res.lover.height / 4);
