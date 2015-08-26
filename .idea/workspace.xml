@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="31ada250-0240-4592-8b02-b142ce0267f8" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/game/yuebing/img/welcome_bg_2.png" afterPath="$PROJECT_DIR$/game/yuebing/img/welcome_bg_2.png" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/game/yuebing/index.html" afterPath="$PROJECT_DIR$/game/yuebing/index.html" />
     </list>
     <ignored path="bjormkj.iws" />
@@ -49,8 +48,8 @@
       <file leaf-file-name="index.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/game/yuebing/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.25925925">
-              <caret line="57" column="21" selection-start-line="57" selection-start-column="21" selection-end-line="57" selection-end-column="21" />
+            <state vertical-scroll-proportion="0.5967078">
+              <caret line="192" column="54" selection-start-line="192" selection-start-column="54" selection-end-line="192" selection-end-column="54" />
               <folding />
             </state>
           </provider>
@@ -506,8 +505,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/game/yuebing/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.25925925">
-          <caret line="57" column="21" selection-start-line="57" selection-start-column="21" selection-end-line="57" selection-end-column="21" />
+        <state vertical-scroll-proportion="0.5967078">
+          <caret line="192" column="54" selection-start-line="192" selection-start-column="54" selection-end-line="192" selection-end-column="54" />
           <folding />
         </state>
       </provider>
