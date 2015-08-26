@@ -25,7 +25,7 @@
         }
 
         canvas {
-            background: #ccc;
+
         }
 
         .bg {
@@ -55,7 +55,7 @@
         }
 
         .box {
-            width: 80%;
+            width: 94%;
             margin: auto;
             background: rgba(255, 255, 255, 0.5);
             padding: 0 0 20px 0;
@@ -126,7 +126,24 @@
             background-repeat: no-repeat;
             background-position: top, top, center, bottom;
         }
-
+        .welcomelogo {
+            position: fixed;
+            width: 140px;
+            right: 10px;
+            top: 10px;
+        }
+        .loading {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            width: 50%;
+            height: auto;
+            margin: auto;
+            display: table;
+            text-align: center;
+        }
         #play {
             position: fixed;
             width: 120px;
@@ -145,6 +162,9 @@
 <canvas id="canvas"></canvas>
 
 <div class="welcome">
+    <div class="welcomelogo">
+        <img src="img/welcomelogo.png" alt=""/>
+    </div>
     <div id="play"></div>
 </div>
 <div class="bg">
@@ -154,16 +174,12 @@
 
             <p id="msg"></p>
 
-            <p>关注新京报：</p>
+
             <p><img src="img/xjb.png" alt=""/></p>
 
             <p><a href="http://a.app.qq.com/o/simple.jsp?pkgname=com.rhct.android.rhctapp" target="_blank">
-                <img src="img/logo2.png" alt=""/></a></p>
+                <img src="img/download.png" alt=""/></a></p>
 
-            <p>
-                <a href="http://a.app.qq.com/o/simple.jsp?pkgname=com.rhct.android.rhctapp" target="_blank">下载
-                    热门话题app</a>
-            </p>
 
             <p>
                 <button id="replay">不服再战！</button>
@@ -171,6 +187,10 @@
 
         </div>
     </div>
+</div>
+<div class="loading">
+    <img src="img/welcomelogo.png" alt=""/>
+    正在载入中...
 </div>
 </body>
 <script src="../c.js"></script>
@@ -195,6 +215,7 @@
         }
 
         function showWelcome() {
+            _(".loading").hide();
             _(".welcome").show();
         }
 
@@ -202,12 +223,14 @@
             zs = 0;
             G.restart();
             _(".bg").hide();
+            _(".loading").hide();
             _(".welcome").hide();
         });
         _("#replay").click(function () {
             G.restart();
             zs = 0;
             _(".bg").hide();
+            _(".loading").hide();
             _(".welcome").hide();
         });
         /* 游戏框架注入 */
