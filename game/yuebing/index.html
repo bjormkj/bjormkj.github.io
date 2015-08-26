@@ -146,6 +146,12 @@
             display: table;
             text-align: center;
         }
+        @keyframes play {
+            from { transform: none; }
+            50% { transform: scale(1.5); }
+            to { transform: none; }
+        }
+
         #play {
             position: fixed;
             width: 120px;
@@ -157,6 +163,7 @@
             right: 0;
             bottom: 15%;
             margin: auto;
+            animation: play 3s infinite;
         }
         .author{
             font-size: 12px; text-align: center;
