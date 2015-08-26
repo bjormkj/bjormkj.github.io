@@ -151,6 +151,11 @@
             50% { transform: scale(1.5); }
             to { transform: none; }
         }
+        @-webkit-keyframes play {
+            from { -webkit-transform: none; }
+            50% { -webkit-transform: scale(1.5); }
+            to { -webkit-transform: none; }
+        }
 
         #play {
             position: fixed;
@@ -164,6 +169,7 @@
             bottom: 15%;
             margin: auto;
             animation: play 3s infinite;
+            -webkit-animation: play 1s infinite;;
         }
         .author{
             font-size: 12px; text-align: center;
