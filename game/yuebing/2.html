@@ -1,0 +1,488 @@
+<!doctype html>
+<html lang="zh-cmn-Hans">
+<!--[if lt IE 7 ]>
+<html class="ie6" lang="zh-cmn-Hans"><![endif]-->
+<!--[if IE 7 ]>
+<html class="ie7" lang="zh-cmn-Hans"><![endif]-->
+<!--[if IE 8 ]>
+<html class="ie8" lang="zh-cmn-Hans"><![endif]-->
+<!--[if IE 9 ]>
+<html class="ie9" lang="zh-cmn-Hans"><![endif]-->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=2.0,maximum-scale=1,user-scalable=no">
+    <title>阅兵大集结</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            max-width: 640px;
+            margin: auto;
+
+        }
+
+        canvas {
+
+        }
+
+        .bg {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+        }
+
+        .gameOver {
+            position: absolute;
+            margin: auto;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            display: table;
+            height: auto;
+            line-height: 1.5em;
+            color: #fff;
+            font-size: 20px;
+            text-align: center;
+            width: 100%;
+        }
+
+        .box {
+            width: 94%;
+            margin: auto;
+            background: rgba(255, 255, 255, 0.5);
+            padding: 10px 0 10px 0;
+            border-radius: 20px;
+        }
+
+        p {
+            width: 100%;
+        }
+
+        img {
+            border: none;
+            width: 100%;
+            margin: auto;
+        }
+
+        .box img {
+            border: none;
+            max-width: 100%;
+            width: 80%;
+        }
+
+        h2 {
+            text-align: center;
+            width: 100%;
+            height: 80px;
+            line-height: 80px;
+            display: block;
+        }
+
+        button {
+            text-align: center;
+            width: 60%;
+            height: 40px;
+            margin: 10px auto;
+            display: block;
+            border: none;
+            background: #f00;
+            font-size: 22px;
+            border-radius: 20px;
+            color: #fff;
+        }
+
+        #msg {
+            text-align: left;
+            width: 80%;
+            margin: auto;
+            margin-bottom: 10px;
+        }
+
+        .bottom {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            height: auto;
+        }
+
+        .welcome {
+            display: none;
+            background: url("img/welcome_bg_3.png"), url("img/welcome_bg_2.png"), url("img/welcome_bg_1.png"), url("img/welcome_bg_0.jpg");
+            background-size: 100%, 100%, 100% 100%, 100% 100%;
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-repeat: no-repeat;
+            background-position: top, top, center, bottom;
+        }
+
+        .welcomelogo {
+            position: fixed;
+            width: 110px;
+            right: 10px;
+            top: 10px;
+        }
+
+        .loading {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            width: 50%;
+            height: auto;
+            margin: auto;
+            display: table;
+            text-align: center;
+        }
+
+        @keyframes play {
+            from {
+                transform: none;
+            }
+            50% {
+                transform: scale(1.5);
+            }
+            to {
+                transform: none;
+            }
+        }
+
+        @-webkit-keyframes play {
+            from {
+                -webkit-transform: none;
+            }
+            50% {
+                -webkit-transform: scale(1.5);
+            }
+            to {
+                -webkit-transform: none;
+            }
+        }
+
+        #play {
+            position: fixed;
+            width: 120px;
+            height: 120px;
+            background-repeat: no-repeat;
+            background: url(img/play.png);
+            background-size: 100%;
+            left: 0;
+            right: 0;
+            bottom: 15%;
+            margin: auto;
+            animation: play 3s infinite;
+            -webkit-animation: play 1s infinite;;
+        }
+
+        .author {
+            font-size: 12px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<canvas id="canvas"></canvas>
+
+<div class="welcome">
+    <div class="welcomelogo">
+        <img src="img/welcomelogo.png" alt=""/>
+    </div>
+    <div id="play"></div>
+</div>
+<div class="bg">
+    <div class="gameOver">
+        <div class="box">
+
+            <!--<h2>游戏被你玩死了 >_< </h2>-->
+
+            <p id="msg"></p>
+
+            <!--
+            <p><img src="img/xjb.png" width="80%" alt=""/></p>-->
+
+            <p><a href="http://a.app.qq.com/o/simple.jsp?pkgname=com.rhct.android.rhctapp" target="_blank">
+                <img src="img/gameoverdown.png" alt=""/></a></p>
+
+            <p class="author">策划/陈璐 设计/许英剑、师春雷 制作/宫文博</p>
+
+            <p>
+                <button id="replay">不服再战！</button>
+            </p>
+
+        </div>
+    </div>
+</div>
+<div class="loading">
+    <img src="img/welcomelogo.png" alt=""/>
+    <img src="img/icon.png" alt="" width="0" height="0"/>
+    正在载入中...
+</div>
+</body>
+<script src="../c.js"></script>
+<script src="../g.js"></script>
+<script>
+    window.onload = function () {
+        /* 自定义变量区 */
+        var zs = 0;
+        var sf = 0.3;
+        var top_y = 0;
+        /* 自定义函数区 */
+
+        function up() {
+            zs += 1;
+            document.title = "大阅兵我集结" + zs + "名战士，不服你来！";
+            _("#msg").html(document.title);
+        }
+
+        function gameOver() {
+            _(".bg").show();
+            _("#replay").hide();
+            up();
+            G.over();
+            setTimeout(function () {
+                _("#replay").show();
+            }, 3000);
+        }
+        function makeman(){
+            var r = Math.floor(Math.random() * 3);
+            switch (r) {
+                case 0:
+                    var man_w = {
+                        type: "man_w",
+                        x: canvas.width / 3 * 2 - (G.res["man_w"].width / 2) * sf,
+                        y: -1 * G.res["man_w"].height * sf * 1.1,
+                        w: G.res["man_w"].width * sf,
+                        h: G.res["man_w"].height * sf,
+                        img: G.res["man_w"]
+                    }
+                    G.spirits.push(man_w);
+                    break;
+                case 1:
+                    var man_b = {
+                        type: "man_b",
+                        x: canvas.width / 3 * 2 - (G.res["man_b"].width / 2) * sf,
+                        y: -1 * G.res["man_w"].height * sf * 1.1,
+                        w: G.res["man_b"].width * sf,
+                        h: G.res["man_b"].height * sf,
+                        img: G.res["man_b"]
+                    }
+                    G.spirits.push(man_b);
+
+                    break;
+                case 2:
+                    var man_g = {
+                        type: "man_g",
+                        x: canvas.width / 3 * 2 - (G.res["man_g"].width / 2) * sf,
+                        y: -1 * G.res["man_w"].height * sf * 1.1,
+                        w: G.res["man_g"].width * sf,
+                        h: G.res["man_g"].height * sf,
+                        img: G.res["man_g"]
+                    }
+                    G.spirits.push(man_g);
+                    break;
+
+            }
+
+            r = Math.floor(Math.random() * 3);
+            switch (r) {
+                case 0:
+                    var man_w = {
+                        type: "man_w",
+                        x: canvas.width / 3 - (G.res["man_w"].width / 2) * sf,
+                        y: -1 * G.res["man_w"].height * sf * 1.1,
+                        w: G.res["man_w"].width * sf,
+                        h: G.res["man_w"].height * sf,
+                        img: G.res["man_w"]
+                    }
+                    G.spirits.push(man_w);
+                    break;
+                case 1:
+                    var man_b = {
+                        type: "man_b",
+                        x: canvas.width / 3 - (G.res["man_b"].width / 2) * sf,
+                        y: -1 * G.res["man_w"].height * sf * 1.1,
+                        w: G.res["man_b"].width * sf,
+                        h: G.res["man_b"].height * sf,
+                        img: G.res["man_b"]
+                    }
+                    G.spirits.push(man_b);
+
+                    break;
+                case 2:
+                    var man_g = {
+                        type: "man_g",
+                        x: canvas.width / 3 - (G.res["man_g"].width / 2) * sf,
+                        y: -1 * G.res["man_w"].height * sf * 1.1,
+                        w: G.res["man_g"].width * sf,
+                        h: G.res["man_g"].height * sf,
+                        img: G.res["man_g"]
+                    }
+                    G.spirits.push(man_g);
+                    break;
+
+            }
+        }
+        function showWelcome() {
+            _(".loading").hide();
+            _(".welcome").show();
+        }
+
+        _("#play").click(function () {
+            zs = 0;
+            G.restart();
+            _(".bg").hide();
+            _(".loading").hide();
+            _(".welcome").hide();
+            makeman();
+        });
+        _("#replay").click(function () {
+            G.restart();
+            zs = 0;
+            _(".bg").hide();
+            _(".loading").hide();
+            _(".welcome").hide();
+            makeman();
+        });
+        /* 游戏框架注入 */
+
+        var select = null;
+        var cha_x = 0;
+        var cha_y = 0;
+
+        G.config({
+            loadingRes: [
+                {name: "bg", src: "img/bg.jpg", loaded: false},
+                {name: "man_w", src: "img/man_w.png", loaded: false},
+                {name: "man_b", src: "img/man_b.png", loaded: false},
+                {name: "bottom", src: "bottom.png", loaded: false},
+                {name: "man_g", src: "img/man_g.png", loaded: false}
+            ],
+            debug: false,
+            spiritsDesc: true,
+            loadingResFn: function (loadedCount, allCount) {
+            },
+            loadingResEnd: function () {
+
+                showWelcome();
+                var tjimg = new Image();
+                tjimg.src = "http://img.users.51.la/18595103.asp";
+            },
+            loopingBefpre: function () {
+                c.drawImage(G.res.bg, 0, 0, canvas.width, canvas.height);
+                c.drawImage(G.res.bottom, 0, canvas.height - canvas.width / 1122 * 406, canvas.width, canvas.width / 1122 * 406);
+
+                top_y = canvas.height;
+
+            },
+            playerLooping: function (player) {
+
+            },
+            loopingSpirit: function (spirit, index, cross_spirit, cross_index) {
+
+
+                spirit.y += 0.5 + G.gameTime * 0.01;
+
+                if (spirit.y < top_y) {
+                    top_y = spirit.y;
+                }
+
+                G.out("top_y:" + top_y);
+
+                if (spirit.y >= canvas.height - canvas.width / 1122 * 406 - spirit.h * sf - 30) {
+                    switch (spirit.type) {
+                        case "man_w":
+                            if ((spirit.x + spirit.w * sf) < canvas.width / 3) {
+                                G.spirits.splice(index, 1);
+                                up();
+                            } else {
+                                gameOver();
+                            }
+                            break;
+                        case "man_b":
+                            if (spirit.x > canvas.width / 3 * 2) {
+                                G.spirits.splice(index, 1);
+                                up();
+                            } else {
+                                gameOver();
+                            }
+                            break;
+                        case "man_g":
+                            if (spirit.x > canvas.width / 3 && (spirit.x + spirit.w * sf) < canvas.width / 3 * 2) {
+                                G.spirits.splice(index, 1);
+                                up();
+                            } else {
+                                gameOver();
+                            }
+                            break;
+                    }
+                }
+                c.drawImage(spirit.img, spirit.x, spirit.y, spirit.img.width * sf, spirit.img.height * sf);
+
+
+            },
+            loopingAfter: function () {
+                if (top_y >= 0) {
+                    makeman();
+
+                }
+                /*
+                 c.drawImage(G.res.zs, 10, 10, G.res.lover.width / 4, G.res.lover.height / 4);
+                 c.font = "20px Courier New";
+                 c.textAlign = 'left';
+                 c.textBaseline = 'top';
+                 c.fillStyle = "#ffffff";
+                 c.fillText("" + zs + "", G.res.lover.width / 4 + 20, 15);
+                 */
+            },
+            touchFn: {
+                start: function (x, y) {
+                    G.out(x);
+                    G.out("start")
+                    G.out(y);
+                    select = null;
+                    for (i = 0; i < G.spirits.length; i++) {
+                        var spirit = G.spirits[i];
+                        if (spirit.x < x && spirit.x + spirit.w > x && spirit.y < y && spirit.y + spirit.h > y) {
+                            G.out("in :" + i);
+                            select = spirit;
+                            cha_x = x - select.x;
+                            cha_y = y - select.y;
+                        }
+                    }
+                },
+                move: function (x, y) {
+                    G.out(x);
+                    G.out("move")
+                    G.out(y);
+                    if (select != null) {
+                        select.x = x - cha_x;
+                        select.y = y - cha_y;
+                    }
+                },
+                end: function (x, y) {
+                    G.out(x);
+                    G.out("end")
+                    G.out(y);
+                }
+            }
+        });
+        /* 初始化游戏 */
+        G.init();
+    }
+</script>
+</html>
