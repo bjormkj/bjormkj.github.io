@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=2.0,maximum-scale=1,user-scalable=no">
+    <title>ladyBug</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        .ladybug{
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            width: 100px;
+            height: 100px;
+            background: #000;
+            margin: auto;
+            border-radius:50%;
+            overflow: hidden;
+            border: solid 2px #000;
+
+        }
+        .ladybug:before{
+            position: absolute;
+            display: block;
+            content: "";
+            background: #f00;
+            width: 48px;
+            height: 75px;
+            left: 0;
+            bottom: 0;
+        }
+        .ladybug:after{
+            position: absolute;
+            display: block;
+            content: "";
+            background: #f00;
+            width: 48px;
+            height: 75px;
+            right: 0;
+            bottom: 0;
+        }
+        .center_circle_and_eyes{
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            width: 25px;
+            height: 25px;
+            background: #000;
+            border-radius: 50%;
+            margin: auto;
+            z-index: 99;
+        }
+        .center_circle_and_eyes:before{
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: #fff;
+            display: block;
+            content: "";
+            margin: auto;
+            top: -30px;
+            left: 0;
+        }
+
+        .center_circle_and_eyes:after{
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: #fff;
+            display: block;
+            content: "";
+            margin: auto;
+            top: -30px;
+            right: 0;
+        }
+
+        .left_circles{
+            position: absolute;
+            top: 20px;
+            bottom: 0;
+            left: -50px;
+            right: 0;
+            width: 15px;
+            height: 15px;
+            background: #000;
+            border-radius: 50%;
+            margin: auto;
+            z-index: 99;
+        }
+        .right_circles{
+            position: absolute;
+            top: 20px;
+            bottom: 0;
+            left: 50px;
+            right: 0;
+            width: 15px;
+            height: 15px;
+            background: #000;
+            border-radius: 50%;
+            margin: auto;
+            z-index: 99;
+        }
+
+
+        .left_circles:after{
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #000;
+            display: block;
+            content: "";
+            margin: auto;
+            top: -25px;
+            left: -12px;
+        }
+        .left_circles:before{
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #000;
+            display: block;
+            content: "";
+            margin: auto;
+            top: 20px;
+            left: -12px;
+        }
+
+        .right_circles:after{
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #000;
+            display: block;
+            content: "";
+            margin: auto;
+            top: -25px;
+            right: -12px;
+        }
+        .right_circles:before{
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #000;
+            display: block;
+            content: "";
+            margin: auto;
+            top: 20px;
+            right: -12px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="ladybug">
+        <div class="center_circle_and_eyes"></div>
+        <div class="left_circles"></div>
+        <div class="right_circles"></div>
+    </div>
+</body>
+</html>
