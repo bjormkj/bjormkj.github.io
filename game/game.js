@@ -1,3 +1,8 @@
+/*
+ * H5 canvas 注入式游戏框架
+ * www.dingdingwenan.com
+ * 新浪微博 @丁丁文案
+ * */
 var G = {
     res: [],
     timer: 0,
@@ -7,14 +12,13 @@ var G = {
     speed: 10,
     timerFPS: 0,
     gameTime: 0,
+    timingValue:1000,//定时的时间的间隔
+    timingFn:function(){
+        //定时事件
+    },
     debug: true,//config
     loadingRes: [],//config
-    player: {
-        x: 0,
-        y: 0,
-        w: 100,
-        h: 100
-    },
+    timing:0,
     touch_x: 0,
     touch_y: 0,
     touchFn: {
@@ -35,16 +39,11 @@ var G = {
     },
     loopingAfter: function () {
     },
-    loopingSpirit: function (spirit) {
-    },//config
-    playerLooping: function () {
-    },//config
     gameStatus: "loadingRes",//loadingRes,resLoaded,ready,looping,stop,over.
     config: function (conf) {
         conf.loadingRes != undefined ? G.loadingRes = conf.loadingRes : false;
         conf.loopingBefpre != undefined ? G.loopingBefpre = conf.loopingBefpre : false;
-        conf.playerLooping != undefined ? G.playerLooping = conf.playerLooping : false;
-        conf.loopingSpirit != undefined ? G.loopingSpirit = conf.loopingSpirit : false;
+        conf.timingFn != undefined ? G.timingFn = conf.timingFn : false;
         conf.loopingAfter != undefined ? G.loopingAfter = conf.loopingAfter : false;
         conf.loadingResFn != undefined ? G.loadingResFn = conf.loadingResFn : false;
         conf.loadingResEnd != undefined ? G.loadingResEnd = conf.loadingResEnd : false;
@@ -61,7 +60,8 @@ var G = {
     },
     restart: function () {
         G.gameTime = 0;
-        G.spirits = [];
+        G.timing=0;
+        G.spirits.length=0;
         G.loadingResEnd();
         G.gameStatus = "looping";
     },
@@ -101,11 +101,12 @@ var G = {
                                 G.out("已经载入:" + this.name);
                                 G.res[this.name] = this;
                                 G.loadingRes[this.index].loaded = true;
-                                if(this.name==="player"){
-                                    G.player.img=this;
-                                    G.player.w=this.width;
-                                    G.player.h=this.height;
-                                }
+                                /*
+                                if (this.name === "player") {
+                                    G.player.img = this;
+                                    G.player.w = this.width;
+                                    G.player.h = this.height;
+                                }*/
                             }
                         } else {
                             resLoadedCount++;
@@ -134,85 +135,47 @@ var G = {
                         //G.out(G.gameTime);
                         G.timer = 0;
                     }
+                    G.timing += 1000 / G.fps;
+                    if(G.timing>= G.timingValue){
+                        G.timingFn();
+                        G.timing=0;
+                    }
                     c.clearRect(0, 0, canvas.width, canvas.height);
                     G.loopingBefpre();//用于渲染背景
-                    G.playerLooping(G.player);//渲染角色（玩家控制）
+                    G.spirits.map(function (spirit, index, arr) {
 
-                    //
-                    var cross_arr = [];
-                    var tmp_spirit = {
-                        x: 0,
-                        y: 0,
-                        w: 0,
-                        h: 0
-                    };
+                        spirit.run();
 
-                    //
-                    if (G.spiritsDesc) {
-                        for (i = G.spirits.length-1; i >0; i--) {
-                            var spirit = G.spirits[i];
-                            var index = i;
-                            var cross_spirit = null;
-                            //
-                            var cross_index = 0;
-                            for (ii = 0; ii < G.spirits.length; ii++) {
-                                var spirit2 = G.spirits[ii];
+                        switch (true) {
+                            case (spirit.canCollision):
+                                //碰撞检测
+                                arr.map(function (obj) {
+                                    switch (true) {
+                                        case (spirit != obj):
+                                            //不是自己
+                                            switch (true) {
+                                                case (obj.canCollision):
+                                                    //对方也开启了碰撞检测
 
-                                if (spirit2 != spirit) {
-                                    if (Math.abs((spirit2.x + spirit2.w / 2) - (spirit.x + spirit.w / 2)) < (spirit2.w / 2 + spirit.w / 2)) {
-                                        if (Math.abs((spirit2.y + spirit2.h / 2) - (spirit.y + spirit.h / 2)) < (spirit2.h / 2 + spirit.h / 2)) {
+                                                    var ju_x = Math.abs(spirit.x - obj.x);
+                                                    var ju_y = Math.abs(spirit.y - obj.y);
 
-                                            cross_spirit = spirit2;
-                                            cross_index = ii;
+                                                    if(ju_x<(spirit.w/2*spirit.scale+obj.w/2*obj.scale)*0.82 && ju_y<(spirit.h/2*spirit.scale+obj.h/2*obj.scale*0.82)){
+                                                        spirit.collision(obj);
+                                                    }
+
+                                                    break;
+
+                                            }
                                             break;
-
-                                        }
                                     }
-                                }
-                            }
-                            //
-                            G.loopingSpirit(spirit, index, cross_spirit, cross_index);//渲染精灵
+
+                                });
+                                break;
                         }
-                    } else {
-                        for (i = 0; i < G.spirits.length; i++) {
 
-                            var spirit = G.spirits[i];
-                            var index = i;
-                            var cross_spirit = null;
-                            //
-                            var cross_index = 0;
-                            for (ii = 0; ii < G.spirits.length; ii++) {
-                                var spirit2 = G.spirits[ii];
-
-                                if (spirit2 != spirit) {
-                                    /*
-                                     if(spirit2.x>spirit.x){
-                                     if(spirit2.x<spirit.x+spirit.w){
-                                     if(spirit2.y>spirit.y){
-                                     if(spirit2.y<spirit.y+spirit.h){
-                                     cross_spirit=spirit2;
-                                     cross_index=ii;
-                                     break;
-                                     }
-                                     }
-                                     }
-                                     }*/
-                                    if (Math.abs((spirit2.x + spirit2.w / 2) - (spirit.x + spirit.w / 2)) < (spirit2.w / 2 + spirit.w / 2)) {
-                                        if (Math.abs((spirit2.y + spirit2.h / 2) - (spirit.y + spirit.h / 2)) < (spirit2.h / 2 + spirit.h / 2)) {
-
-                                            cross_spirit = spirit2;
-                                            cross_index = ii;
-                                            break;
-
-                                        }
-                                    }
-                                }
-
-                            }
-                            //
-                            G.loopingSpirit(spirit, index, cross_spirit, cross_index);//渲染精灵
-                        }
-                    }
+                        c.drawImage(spirit.img, spirit.x - spirit.w / 2 * spirit.scale, spirit.y - spirit.h / 2 * spirit.scale, spirit.w * spirit.scale, spirit.h * spirit.scale);
+                    });
 
 
                     G.loopingAfter();//渲染分数等
@@ -223,6 +186,19 @@ var G = {
                     break;
             }
         }, G.speed);
+    },
+    delSpirit: function (spirit) {
+
+        G.spirits.map(function (obj, index, arr) {
+
+            switch (true) {
+                case (spirit === obj):
+                    G.spirits.splice(index, 1);
+
+                    break;
+            }
+            console.log(i);
+        });
     },
     init: function () {
         G.out("初始化画布");
@@ -237,21 +213,45 @@ var G = {
         canvas.addEventListener("touchstart", function () {
             event.preventDefault();
             var touch = event.touches[0]; //获取第一个触点
-            G.touch_x = Number(touch.pageX); //页面触点X坐标
-            G.touch_y = Number(touch.pageY); //页面触点Y坐标
+            var touch_x = Number(touch.pageX); //页面触点X坐标
+            var touch_y = Number(touch.pageY); //页面触点Y坐标
 
-            G.touchFn.start(G.touch_x, G.touch_y);
+            G.selectSpirit = null;
+            G.spirits.map(function (spirit, index, arr) {
+                switch (true) {
+                    case (spirit.canDrag):
+                        var x = Math.abs(touch_x - spirit.x);
+                        var y = Math.abs(touch_y - spirit.y);
+                        if (x < spirit.w / 2 * spirit.scale && y < spirit.h / 2 * spirit.scale) {
+                            G.selectSpirit = spirit;
+                            cha_x = touch_x - spirit.x;
+                            cha_y = touch_y - spirit.y;
+
+                            spirit.click();
+                        }
+                        break;
+                }
+            });
+
         });
+
+
         canvas.addEventListener("touchmove", function () {
             event.preventDefault();
             var touch = event.touches[0]; //获取第一个触点
-            G.touch_x = Number(touch.pageX); //页面触点X坐标
-            G.touch_y = Number(touch.pageY); //页面触点Y坐标
-            G.touchFn.move(G.touch_x, G.touch_y);
+            var touch_x = Number(touch.pageX); //页面触点X坐标
+            var touch_y = Number(touch.pageY); //页面触点Y坐标
+
+            if (G.selectSpirit != null) {
+                G.selectSpirit.x = touch_x - cha_x;
+                G.selectSpirit.y = touch_y - cha_y;
+            }
+
+
         });
         canvas.addEventListener("touchend", function () {
             event.preventDefault();
-            G.touchFn.end(G.touch_x, G.touch_y);
+
         });
 
         c = canvas.getContext('2d');
@@ -261,5 +261,67 @@ var G = {
         G.out("初始化画布完毕");
         var gameTime = 0;
         G.resetTimer();
+    }
+}
+
+var Spirit = function (role, x, y, w, h) {
+    this.role = role;
+    this.x = x;
+    this.y = y;
+    this.w = w;
+    this.h = h;
+    this.scale = 1.0;
+    this.canDrag = false;
+    this.canCollision = false;
+}
+Spirit.prototype = {
+    setImage: function (img) {
+        this.img = img;
+    },
+    autoWH: function () {
+        this.w = this.img.width;
+        this.h = this.img.height;
+    },
+    setScaleXY: function (v) {
+        this.scale = v;
+    },
+    doRun: function () {
+
+    },
+    doDrag: function () {
+
+    },
+    run: function () {
+        this.doRun();
+    },
+    onRun: function (fn) {
+        this.doRun = fn;
+    },
+    drag: function () {
+        this.doDrag();
+    },
+    onDrag: function (fn) {
+        this.canDrag = true;
+        this.doDrag = fn;
+    },
+    doCollision:function(){
+
+    },
+    collision:function(spirit){
+        //碰撞的对象
+        this.doCollision(spirit);
+    },
+    onCollision:function(fn){
+        this.canCollision=true;
+        this.doCollision=fn;
+    },
+    doclick:function(){
+
+    },
+    click:function(){
+        this.doclick(this);
+    },
+    onclick:function(fn){
+        this.doclick=fn;
     }
 }

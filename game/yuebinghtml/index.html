@@ -222,6 +222,19 @@
             right: 0px;
             /* margin: auto; */
         }
+        .tips{
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            width: 80vw;
+            padding: 10vw;
+            height: 50vw;
+            background: rgba(255,255,255,0.5);
+            margin: auto;
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -250,7 +263,7 @@
 
             <p class="author">策划/陈璐 设计/许英剑、师春雷</p>
 
-            <p class="author">制作/宫文博 数据库/李阳</p>
+            <p class="author">游戏制作/热门话题app 前端团队</p>
 
             <p>
                 <button id="replay" class="replay">不服再战！</button>
@@ -272,6 +285,11 @@
     <img src="img/welcomelogo.png" alt=""/>
     <img src="img/icon.png" alt="" width="0" height="0"/>
     正在载入中...
+</div>
+<div class="tips">
+    <h2>小贴士：</h2>
+    <p>用手拖动士兵，根据士兵服装颜色拖拽到下方相应队列。</p>
+    <button id="hide_tips" class="hide_tips">知道啦～</button>
 </div>
 </body>
 <script src="../c.js"></script>
@@ -350,7 +368,17 @@
             _(".welcome").show();
             _(".paiming").hide();
         }
-
+        function show_tips(){
+            _('.tips').show();
+            G.zt();
+        }
+        function hide_tips(){
+            G.zt();
+            _('.tips').hide();
+        }
+        _('#hide_tips').click(function(){
+            hide_tips();
+        });
         _("#play").click(function () {
             zs = 0;
             G.restart();
@@ -359,6 +387,13 @@
             _(".welcome").hide();
             _(".paiming").hide();
             make_a_man();
+            setTimeout(function(){
+                show_tips();
+            },5000);
+
+            var audio=new Audio();
+            audio.src="bg.mp3";
+            audio.play();
 
         });
         _("#submit").click(function () {
